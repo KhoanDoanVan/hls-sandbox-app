@@ -23,13 +23,13 @@ class HLSBasicStreamBipBop4x3VisualizerViewModel: ObservableObject {
     private var monitorTimer: Timer?
     private var statusObserver: AnyCancellable?
     
-    @Published var currentGear: BipBop4x3Gear = BipBop4x3Gear.abrUri
+    @Published var currentGear: BipBop4x3Gear? = BipBop4x3Gear.abrUri
     @Published var currentBitrate: Int = 0
     @Published var currentResolution: String = "Loading..."
     @Published var isAudioOnly: Bool = false
     @Published var currentTime: AVPlayerItem?
     var isABR: Bool {
-        return currentGear.uri == BipBop4x3Gear.abrUri.uri
+        return currentGear?.uri == BipBop4x3Gear.abrUri.uri
     }
 
     @Published var isOpenSheet: Bool = false
@@ -80,6 +80,8 @@ class HLSBasicStreamBipBop4x3VisualizerViewModel: ObservableObject {
         monitorTimer?.invalidate()
         monitorTimer = nil
         statusObserver = nil
+        self.currentGear = BipBop4x3Gear.abrUri
+        player.pause()
     }
     
     /// Pause AVPLAYER

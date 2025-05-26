@@ -11,14 +11,31 @@ struct ContentView: View {
     
     @Namespace private var animation
     @State private var currentTab: String = "4x3"
+    @StateObject private var vm4x3 = HLSBasicStreamBipBop4x3VisualizerViewModel()
+    @StateObject private var vm16x9 = HLSBasicStreamBipBop16x9VisualizerViewModel()
     
     var body: some View {
         NavigationStack {
             VStack {
                 CustomSegmentedControl()
                 
-                HLSBasicStreamBipBop4x3VisualizerView()
+                if currentTab == "4x3" {
+                    HLSBasicStreamBipBop4x3VisualizerView(viewModel: vm4x3)
+                } else {
+                    HLSBasicStreamBipBop16x9VisualizerView(vm: vm16x9)
+                }
+                
+                
             }
+            .onChange(of: currentTab, { oldValue, newValue in
+                
+                if currentTab == "4x3" {
+                    vm16x9.stopMonitoring()
+                } else {
+                    vm4x3.stopMonitoring()
+                }
+                
+            })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 LinearGradient(
