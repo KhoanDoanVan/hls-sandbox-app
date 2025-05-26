@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 
 struct HLSBasicStreamBipBop4x3VisualizerView: View {
-    @StateObject private var viewModel = HLSBasicStreamBipBop4x3VisualizerViewModel()
+    @StateObject var viewModel: HLSBasicStreamBipBop4x3VisualizerViewModel
 
     var body: some View {
         ScrollView(.vertical) {
@@ -24,7 +24,7 @@ struct HLSBasicStreamBipBop4x3VisualizerView: View {
                     Text("📺 Resolution: \(viewModel.currentResolution)")
                     Text("📶 Bitrate: \(viewModel.currentBitrate) kbps")
                     Text("🔊 Audio Only: \(viewModel.isAudioOnly ? "Yes" : "No")")
-                    Text("🔗 URI: \(viewModel.currentGear.uri)")
+                    Text("🔗 URI: \(viewModel.currentGear?.uri)")
                         .lineLimit(4)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,9 +69,6 @@ struct HLSBasicStreamBipBop4x3VisualizerView: View {
             .onAppear {
                 viewModel.startMonitoring()
             }
-            .onDisappear {
-                viewModel.stopMonitoring()
-            }
             .sheet(isPresented: $viewModel.isOpenSheet) {
                 sheetSettings()
             }
@@ -94,7 +91,7 @@ struct HLSBasicStreamBipBop4x3VisualizerView: View {
                     // Auto Bitrate
                     buttonGearItem(
                         label: BipBop4x3Gear.abrUri.label,
-                        isSelected: viewModel.currentGear.uri == BipBop4x3Gear.abrUri.uri
+                        isSelected: viewModel.currentGear?.uri == BipBop4x3Gear.abrUri.uri
                     ) {
                         viewModel.setGear(BipBop4x3Gear.abrUri)
                     }
@@ -102,7 +99,7 @@ struct HLSBasicStreamBipBop4x3VisualizerView: View {
                     ForEach(BipBop4x3Gear.gears, id: \.id) { gear in
                         buttonGearItem(
                             label: gear.label,
-                            isSelected: viewModel.currentGear.uri == gear.uri
+                            isSelected: viewModel.currentGear?.uri == gear.uri
                         ) {
                             viewModel.setGear(gear)
                         }
