@@ -1,5 +1,5 @@
 //
-//  BipBip4x3GearModel.swift
+//  BipBop4x3GearModel.swift
 //  hls-sandbox-ios-app
 //
 //  Created by Đoàn Văn Khoan on 22/5/25.

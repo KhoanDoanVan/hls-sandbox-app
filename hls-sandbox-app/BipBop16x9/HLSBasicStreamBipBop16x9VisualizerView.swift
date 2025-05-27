@@ -46,15 +46,34 @@ struct HLSBasicStreamBipBop16x9VisualizerView: View {
                 }
             }
             .pickerStyle(.menu)
-            .onChange(of: vm.currentVariant) { oldValue, newValue in
-                if let variant = newValue {
-                    vm.selectVariant(variant)
-                    print("Change Variant: \(variant.label)")
+            
+            Menu("Audio Tracks") {
+                ForEach(vm.audioOptions, id: \.self) { option in
+                    Button(option.name) {
+                        vm.switchAudioTrack(name: option.name)
+                    }
                 }
             }
-            .onAppear {
-                vm.fetchAvailableVariants()
+
+            Menu("Subtitles") {
+                ForEach(vm.subtitleOptions, id: \.self) { option in
+                    Button(option.name) {
+                        vm.enableSubtitle(name: option.name)
+                    }
+                }
+                Button("Tắt Subtitles") {
+                    vm.disableSubtitle()
+                }
             }
+        }
+        .onChange(of: vm.currentVariant) { oldValue, newValue in
+            if let variant = newValue {
+                vm.selectVariant(variant)
+                print("Change Variant: \(variant.label)")
+            }
+        }
+        .onAppear {
+            vm.fetchAvailableVariants()
         }
         .padding()
         
